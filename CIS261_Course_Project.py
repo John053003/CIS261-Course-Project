@@ -92,7 +92,7 @@ def main():
         total_hours += hours
         total_gross += gross
         total_tax += tax
-        toatl_net += net
+        total_net += net
 
         display_totals(total_employees, total_hours, total_gross, total_tax, total_net)
 
