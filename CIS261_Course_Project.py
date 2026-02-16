@@ -133,7 +133,7 @@ def main():
     display_totals(total_employees, total_hours, total_gross, total_tax, total_net)
 
 
-        # Display information for this employee
+       
 
 if __name__ == "__main__":
     main()
