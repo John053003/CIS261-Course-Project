@@ -1,6 +1,6 @@
 #John Fernandez
 #CIS261
-#Project Phase 1 
+#Project Phase 2 
 
 def get_employee_name():
     # Get employee name from user
@@ -45,9 +45,10 @@ def calculate_pay(hours, rate, tax_rate):
     net_pay = gross_pay - income_tax 
     return gross_pay, income_tax, net_pay 
 
-def display_employee_summary(name, hours, rate, tax_rate, gross, tax, net):
+def display_employee_summary(name, from_date, to_date, hours, rate, tax_rate, gross, tax, net):
     print("\n--- Employee Summary ---")
     print(f"Name: {name}") 
+    print(f"Pay Period: {from_date} to {to_date}")
     print(f"Hours Worked: {hours:.2f}")
     print(f"Hourly Rate: ${rate:.2f}")
     print(f"Tax Rate: {tax_rate:.2f}")
@@ -63,38 +64,73 @@ def display_totals(total_employees, total_hours, total_gross, total_tax, total_n
     print(f"Total Income Tax: ${total_tax:.2f}")
     print(f"Total Net Pay: ${total_net:.2f}")
 
+def get_pay_period():
+    while True:
+        from_date = input("Enter from date (mm/dd/yyyy): ")
+        to_date = input("Enter to date (mm/dd/yyyy): ")
+        # Basic format check
+        if len(from_date) == 10 and len(to_date) == 10:
+            return from_date, to_date
+        else:
+            print("Please enter dates in mm/dd/yyyy format.")
+
     
 def main():
-    total_employees = 0 
-    total_hours = 0 
-    total_gross = 0 
-    total_tax = 0 
-    total_net = 0 
+    employees = [] # list to hold employee dictionaries 
 
-    # Start the main loop
+    # Input loop
     while True:
-        # Get employee information by calling your functions 
         employee_name = get_employee_name()
 
-        # Check if user wants to end the program
-        if employee_name.lower() == 'end': 
+        if employee_name.lower() == "end": 
             break
-
+        from_date, to_date = get_pay_period()
         hours = get_hours_worked()
         rate = get_hourly_rate()
         tax_rate = get_tax_rate()
 
         gross, tax, net = calculate_pay(hours, rate, tax_rate)
+        # Store all data for this employee in a dictionary 
+        employee = {
+            "name": employee_name,
+            "from_date": from_date,
+            "to_date": to_date, 
+            "hours": hours, 
+            "rate": rate,
+            "tax_rate": tax_rate,
+            "gross": gross, 
+            "tax": tax,
+            "net": net
+        }
+        employees.append(employee)
+    #Display all employees and totals After input is complete
+    total_employees = 0 
+    total_hours = 0
+    total_gross = 0 
+    total_tax = 0
+    total_net = 0 
 
-        display_employee_summary(employee_name, hours, rate, tax_rate, gross, tax, net)
-
+    for emp in employees: 
+        display_employee_summary(
+            emp["name"],
+            emp["from_date"],
+            emp["to_date"],
+            emp["hours"],
+            emp["rate"],
+            emp["tax_rate"],
+            emp["gross"],
+            emp["tax"],
+            emp["net"],
+        )
+             
+        
         total_employees += 1
-        total_hours += hours
-        total_gross += gross
-        total_tax += tax
-        total_net += net
+        total_hours += emp["hours"]
+        total_gross += emp["gross"]
+        total_tax += emp["tax"]
+        total_net += emp["net"]
 
-        display_totals(total_employees, total_hours, total_gross, total_tax, total_net)
+    display_totals(total_employees, total_hours, total_gross, total_tax, total_net)
 
 
         # Display information for this employee
